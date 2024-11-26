@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibrans Studio - Agendar Turno</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <header class="container-fluid bg-dark text-white p-3">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="../index.html">
+                <img src="../img/Logobarberia1.jpeg" alt="Vibrans Studio Logo" class="logo" style="height: 60px;"></a>
+            <h1>Vibrans Studio</h1>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Quienes Somos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Barberos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main class="container my-4">
+        <section>
+            <h2 class="text-center mb-4">Agendar Turno</h2>
+            <form id="appointmentForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="service" class="form-label"><b>Servicio</b></label>
+                        <select id="service" name="service" class="form-select" required>
+                            <option value="">Seleccionar servicio</option>
+                            <option value="corte">Corte</option>
+                            <option value="barba">Barba</option>
+                            <option value="tratamiento">Tratamiento</option>
+                            <option value="tintura">Tintura</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="barber" class="form-label"><b>Barbero</b></label>
+                        <select id="barber" name="barber" class="form-select" required>
+                            <option value="">Seleccionar barbero</option>
+                            <option value="luis">Luis Gonzalez</option>
+                            <option value="juan">Juan Perez</option>
+                            <option value="alex">Alex Cortes</option>
+                            <option value="cristian">Cristian Pineda</option>
+                            <option value="monica">Monica Padilla</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="date" class="form-label"><b>Fecha</b></label>
+                        <input type="text" id="date" name="date" class="form-control" required>
+                    </div>
+                </div>
+                <button type="button" id="checkAvailability" class="btn btn-primary w-100"><b>Consultar disponibilidad</b></button>
+            </form>
+
+            <div id="schedule" class="mt-4">
+                <h3 class="text-center mb-3">Horas disponibles</h3>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4>MAÑANA</h4>
+                        <div id="morning-slots"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>TARDE</h4>
+                        <div id="afternoon-slots"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>NOCHE</h4>
+                        <div id="night-slots"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="container-fluid bg-dark text-white text-center p-3">
+        <div class="social-media mb-2">
+            <h3>Siguenos en nuestras redes</h3>
+            <a href="#"><img src="../img/fb.jpg" alt="Facebook" class="img-fluid" style="height: 30px;"></a>
+            <a href="#"><img src="../img/instagram.jpg" alt="Instagram" class="img-fluid" style="height: 30px;"></a>
+            <a href="#"><img src="../img/twitter.jpg" alt="Twitter" class="img-fluid" style="height: 30px;"></a>
+            <a href="#"><img src="../img/yt.jpg" alt="Youtube" class="img-fluid" style="height: 30px;"></a>
+        </div>
+        <p>© 2024 Vibrans Studio. Todos los derechos reservados.</p>
+    </footer>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Inicialización de Flatpickr
+        flatpickr("#date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+
+        // Ejemplo de horarios disponibles
+        const horarios = {
+            morning: ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM"],
+            afternoon: ["1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"],
+            night: ["7:00 PM", "8:00 PM"],
+        };
+
+        document.getElementById("checkAvailability").addEventListener("click", () => {
+            // Rellenar los horarios disponibles
+            const morningContainer = document.getElementById("morning-slots");
+            const afternoonContainer = document.getElementById("afternoon-slots");
+            const nightContainer = document.getElementById("night-slots");
+
+            morningContainer.innerHTML = horarios.morning
+                .map((hour) => `<div class="time-slot">${hour}</div>`)
+                .join("");
+            afternoonContainer.innerHTML = horarios.afternoon
+                .map((hour) => `<div class="time-slot">${hour}</div>`)
+                .join("");
+            nightContainer.innerHTML = horarios.night
+                .map((hour) => `<div class="time-slot">${hour}</div>`)
+                .join("");
+
+            // Selección de hora
+            document.querySelectorAll(".time-slot").forEach((slot) => {
+                slot.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".time-slot.selected")
+                        .forEach((el) => el.classList.remove("selected"));
+                    slot.classList.add("selected");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
